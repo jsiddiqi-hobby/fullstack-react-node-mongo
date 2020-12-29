@@ -1,21 +1,27 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import PhoneBook from './components/Phonebook'
 import PersonForm from './components/PersonForm'
 import PersonFilter from './components/Filter'
+import axios from 'axios'
 
 
 const App = () => {
   
-  const [persons, setPersons] = useState(
-    [{name: "Alice",
-      number: "123"}]
-  )
+  const [persons, setPersons] = useState([])
 
   const [filterText, setFilterText] = useState('')
 
   const personsToShow = filterText === ''
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(filterText.toLowerCase()))
+
+    useEffect( () => {
+      axios
+        .get("http://localhost:3001/db")
+        .then( response => {
+          setPersons(response.data.notes)
+        })
+    }, [])
 
   return (
     <div>
