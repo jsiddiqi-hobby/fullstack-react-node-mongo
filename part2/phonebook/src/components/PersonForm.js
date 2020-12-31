@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import RequestHandler from '../services/RequestHandler'
 
 const PersonForm = (props) => {
     const [newName, setNewName] = useState('')
@@ -14,9 +15,15 @@ const PersonForm = (props) => {
             name: newName,
             number: newNumber
           }
-          props.setPersons(props.persons.concat(personObj))
-          setNewName('')
-          setNewNumber('')
+          
+          RequestHandler.addNewEntry(personObj)
+          .then( response => {
+            props.setPersons(props.persons.concat(personObj))
+            setNewName('')
+            setNewNumber('')
+          })
+
+          
         }
         else {
           window.alert(`${newName} is already added to phonebook`)

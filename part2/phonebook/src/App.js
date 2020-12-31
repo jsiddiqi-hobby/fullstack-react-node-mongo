@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import PhoneBook from './components/Phonebook'
 import PersonForm from './components/PersonForm'
 import PersonFilter from './components/Filter'
-import axios from 'axios'
+import RequestHandler from './services/RequestHandler'
 
 
 const App = () => {
@@ -16,8 +16,7 @@ const App = () => {
     : persons.filter(person => person.name.toLowerCase().includes(filterText.toLowerCase()))
 
     useEffect( () => {
-      axios
-        .get("http://localhost:3001/db")
+      RequestHandler.getAllEntries()
         .then( response => {
           setPersons(response.data.notes)
         })
@@ -29,7 +28,7 @@ const App = () => {
       <PersonFilter setFilterText = {setFilterText}/>
       <PersonForm persons = {persons} setPersons={setPersons}/>
       <h2>Numbers</h2>
-      <PhoneBook personsToShow = {personsToShow}/>
+      <PhoneBook persons = {persons} setPersons={setPersons} personsToShow = {personsToShow}/>
     </div>
   )
 }
